@@ -38,17 +38,22 @@ There was a great deal of data munging required to transform categories and genr
 </ul>
 
 ## <span style="color: Teal; font-weight: bold">Exploratory Data Analysis</span>
-After all necessary data transformation, I ran EDA to check the correlations between predictors and the target (<code>price_log</code>) and look at the distribution of <code>price_log</code> within categories and genres, and within tags. Due to their size, the full correlation matrices are not included below, but can be found <a href="">here</a>.
+After all necessary data transformation, I ran EDA to check the correlations between predictors and the target (<code>price_log</code>). Due to their size, the full correlation matrices are not included below, but can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>.
 <p align="center">
 <img src="images/correlations_mainline.png">
 <p></p>
 
+I also checked the distribution of price against predictors.
 <p align="center">
-<img src="images/price hist_log xform.png">
+<img src="images/pairplots_support and langs.png">
 <p></p>
 
 <p align="center">
-<img src="images/price hist_log xform.png">
+<img src="images/boxplots_catgen.png">
+<p></p>
+
+<p align="center">
+<img src="images/boxplots_tags_bool.png">
 <p></p>
 
 
