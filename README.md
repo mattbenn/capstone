@@ -68,3 +68,19 @@ Based on this, we can predict we may have to go beyond basic linear regression m
 
 ## <span style="color: Teal; font-weight: bold">Data Modeling</span>
 At this stage, I tested how well ridge regression predicts the target. Because ridge regression can handle many predictor features due to how it regularizes predictors, I decided to try including all the predictor categories I had identified. Additionally, I decided to test a second-degree model for Categories and Genres (which are coded as 0 and 1, to signify whether a specific category or genre was mapped to a game) to see if the interaction of the two may predict game price. It is feasible, for example, that a "multiplayer first-person-shooter" sells much better than games that are only either "multiplayer" or "first-person-shooter".
+
+The final ridge regression model predicts price fairly well. The final RMSE of the model is 0.31. Because the target (<code>price_log</code>) is the log of price, we can transform the RMSE to dollars by finding the RMSE of the exponentiated predictions and the original values. After doing so, we get an RMSE of $1.05, which means the predictions given by model are on average within $1.05 of the actual price. This is very good, overall, given the range of <code>price</code> is between $10 and ~ $51. However, the R<sup>2</sup> value is only .160, and given the scale of price I would expect that the R<sup>2</sup> would be a bit higher with an RSME that small.
+
+I plotted the predicted and actual values, as well as the residual values against the actual values, which produced the following:
+<p align="center">
+<img src="images/ridge_predicted_actual.png">
+<p></p>
+
+<p align="center">
+<img src="images/ridge_actual_residuals.png">
+<p></p>
+
+There is some predictive power, but it is clear that much of the error is non-random, since residuals increase as actual price goes up. This suggests the model is consistenly guessing around the median or mean value of <code>price_log</code>. To test this possibility, I conducted dummy regression, using both the mean and the median. The RMSE for both models is similar (Median strategy: RMSE = 0.358, Mean strategy: RMSE = 0.349), but the R<sup>2</sup> value is below or close to 0 than the model for both models. Although the error values for both dummy models are similar to the predictive model's error, the predictive model has much better predictive power when guessing price.
+
+## <span style="color: Teal; font-weight: bold">Next Steps</span>
+The next step is to use more advanced techniques like random forest, XGBoost, SVM, and maybe a deep neural network to see if better models can be produced.
