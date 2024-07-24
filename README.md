@@ -1,4 +1,6 @@
 # What Drives the Price of Video Games on Steam?
+(The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>
+
 ## <span style="color: Teal; font-weight: bold"> Business Understanding & Assessing the Situation</span>
 
 <span style="color: Teal; text-decoration: underline">**Determine Business Objectives:**</span> Video games are now <a href="https://www.forbes.com/sites/forbesagencycouncil/2023/11/17/the-gaming-industry-a-behemoth-with-unprecedented-global-reach/">one of the largest enterainment industries in the world</a>, and Steam is one of the largest platforms for the distribution and hosting of personal computer (PC) games, and has been for <a href="https://archive.vn/JkIMI">over a decade</a>. Many video game developers release a variety of games on Steam of different genres, budgets, and quality, all tailored to different market segments. Developers have a strong interest in predicting how popular their games will be and which price points to choose when selling their games. Therefore, high-quality data showing what characteristics of games are related to popularity and price are of great interest (and great value) to video game developers looking to distribute games to a wide PC audience.
@@ -38,7 +40,7 @@ There was a great deal of data munging required to transform categories and genr
 </ul>
 
 ## <span style="color: Teal; font-weight: bold">Exploratory Data Analysis</span>
-After all necessary data transformation, I ran EDA to check the correlations between predictors and the target (<code>price_log</code>). Due to their size, the full correlation matrices are not included below, but can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>.
+After all necessary data transformation, I ran EDA to check the correlations between predictors and the target (<code>price_log</code>). Due to their size, the full correlation matrices are not included below, but can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">in the notebook</a>.
 <p align="center">
 <img src="images/correlations_mainline.png">
 <p></p>
@@ -56,6 +58,13 @@ I also checked the distribution of price against predictors.
 <img src="images/boxplots_tags_bool.png">
 <p></p>
 
+From the EDA, we can see a few things:
+<ul>
+  <li><code>price_log</code> does not correlate strongly with any individual predictor, but has weak correlations with many predictors</li>
+  <li>The distribution of price within categories and genres, and within tags, seems to be fairly uniform in many cases. There are a few notable exceptions, however, such as the category 'Single Player'--the price of games seems to be on average higher when this tag is not present.</li>
+</ul>
 
+Based on this, we can predict we may have to go beyond basic linear regression modeling to find a solid model.
 
 ## <span style="color: Teal; font-weight: bold">Data Modeling</span>
+At this stage, I tested how well ridge regression predicts the target. Because ridge regression can handle many predictor features due to how it regularizes predictors, I decided to try including all the predictor categories I had identified. Additionally, I decided to test a second-degree model for Categories and Genres (which are coded as 0 and 1, to signify whether a specific category or genre was mapped to a game) to see if the interaction of the two may predict game price. It is feasible, for example, that a "multiplayer first-person-shooter" sells much better than games that are only either "multiplayer" or "first-person-shooter".
