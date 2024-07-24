@@ -23,4 +23,34 @@ I examined the target, video game price in May 2024 (<code>price</code>), and di
 <p align="center">
 <img src="images/price hist_log xform.png">
 <p></p>
+After data cleaning, the data had 
 
+This dataset has many possible predictors, and some of them are in unique JSON-like or list-like format. After extracting relevant information, I decided to focus on a few different categories of predictors:
+<ul>
+  <li><b>Support Features</b> (e.g., does the game have a dedicated website and support email) and <b>Language Availability</b> (i.e., how many languages does the game have text and audio for)</li>
+  <li><b>Categories and Genres</b> of games, like 'Multi-player' (category) and 'Casual' (genre)</li>
+  <li><b>Tags</b> of games (e.g., descriptors like 'Indie', 'Multiplayer', and 'Open World' that describe game elements)</li>
+</ul>
+There was a great deal of data munging required to transform categories and genres, and tags, into usable features. Each feature had over thirty values, and many values were barely represented in the data. I decided to keep only those tags which were present in at least 10% of the data, to avoid having too many unbalanced classes among the predictors. After all cleaning and transformation was complete, I kept the following representations of categories and genres, and tags, in the data:
+<ul>
+  <li><b>Categories and Genres</b>: I kept a feature representing whether a game had a specific category or genre mapped to it in the data</li>
+  <li><b>Tags</b>: Tags can be added and voted on by players, and the number of players who signify that a game has a tag may be as important as the fact whether a game has a tag at all. To capture both possibilities, I created two datasets for tags: one capturing whether a game had a tag at all (with 0 and 1 values), and another dataset with the total number of times that each tag had been selected for each game.</li>
+</ul>
+
+## <span style="color: Teal; font-weight: bold">Exploratory Data Analysis</span>
+After all necessary data transformation, I ran EDA to check the correlations between predictors and the target (<code>price_log</code>) and look at the distribution of <code>price_log</code> within categories and genres, and within tags. Due to their size, the full correlation matrices are not included below, but can be found <a href="">here</a>.
+<p align="center">
+<img src="images/correlations_mainline.png">
+<p></p>
+
+<p align="center">
+<img src="images/price hist_log xform.png">
+<p></p>
+
+<p align="center">
+<img src="images/price hist_log xform.png">
+<p></p>
+
+
+
+## <span style="color: Teal; font-weight: bold">Data Modeling</span>
