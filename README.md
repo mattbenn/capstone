@@ -1,7 +1,7 @@
 # What Drives the Price of Video Games on Steam?
 (The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>
 
-## <span style="color: Teal; font-weight: bold"> Business Understanding & Assessing the Situation</span>
+## <span style="color: Teal; font-weight: bold">Business Understanding & Assessing the Situation</span>
 
 <span style="color: Teal; text-decoration: underline">**Determine Business Objectives:**</span> Video games are now <a href="https://www.forbes.com/sites/forbesagencycouncil/2023/11/17/the-gaming-industry-a-behemoth-with-unprecedented-global-reach/">one of the largest enterainment industries in the world</a>, and Steam is one of the largest platforms for the distribution and hosting of personal computer (PC) games, and has been for <a href="https://archive.vn/JkIMI">over a decade</a>. Many video game developers release a variety of games on Steam of different genres, budgets, and quality, all tailored to different market segments. Developers have a strong interest in predicting how popular their games will be and which price points to choose when selling their games. Therefore, high-quality data showing what characteristics of games are related to popularity and price are of great interest (and great value) to video game developers looking to distribute games to a wide PC audience.
 
@@ -67,10 +67,10 @@ From the EDA, we can see a few things:
 Based on this, we can predict we may have to go beyond basic linear regression modeling to find a solid model.
 
 # <span style="color: Teal; font-weight: bold">Data Modeling</span>
-# <span style="color: Teal; font-weight: bold">Ridge Regression</span>
+## <span style="color: Teal; font-weight: bold">Ridge Regression</span>
 At this stage, I tested how well ridge regression predicts the target. Because ridge regression can handle many predictor features due to how it regularizes predictors, I tried including all the predictor categories I had identified. Additionally, I decided to test a second-degree model for Categories and Genres (which are coded as 0 and 1, to signify whether a specific category or genre was mapped to a game) to see if the interaction of the two may predict game price. It is feasible, for example, that a "multiplayer first-person-shooter" sells much better than games that are only either "multiplayer" or "first-person-shooter".
 
-The final ridge regression model predicts price fairly well. The final RMSE of the model is 0.31. Because the target (<code>price_log</code>) is the log of price, we can transform the RMSE to dollars by finding the RMSE of the exponentiated predictions and the original values. After doing so, we get an RMSE of $1.05, which means the predictions given by model are on average within $1.05 of the actual price. This is very good, overall, given the range of <code>price</code> is between $10 and ~ $51. However, the R<sup>2</sup> value is only .160, and given the scale of price I would expect that the R<sup>2</sup> would be a bit higher with an RSME that small.
+The final ridge regression model predicts price fairly well. The final RMSE of the model is 0.31. Because the target (<code>price_log</code>) is the log of price, we can transform the RMSE to dollars by finding the RMSE of the exponentiated predictions and the original values. After doing so, we get an RMSE of ~$7.00, which means the predictions given by model are on average within $7.00 of the actual price. This is not great, overall, given the range of <code>price</code> is between $10 and ~ $51, with a mean of $19.62 and a median of $16.99. The R<sup>2</sup> value is .160, which is not large, and this tracks with the high RMSE.
 
 I plotted the predicted and actual values, as well as the residual values against the actual values, which produced the following:
 <p align="center">
@@ -81,10 +81,10 @@ I plotted the predicted and actual values, as well as the residual values agains
 <img src="images/ridge_actual_residuals.png">
 <p></p>
 
-There is some predictive power, but it is clear that much of the error is non-random, since residuals increase as actual price goes up. This suggests the model is consistenly guessing around the median or mean value of <code>price_log</code>. To test this possibility, I conducted dummy regression, using both the mean and the median. The RMSE for both models is similar (Median strategy: RMSE = 0.358, Mean strategy: RMSE = 0.349), but the R<sup>2</sup> value is below or close to 0 than the model for both models. Although the error values for both dummy models are similar to the predictive model's error, the predictive model has much better predictive power when guessing price.
+There is some predictive power, but it is clear that much of the error is non-random, since residuals increase as actual price goes up. This suggests the model is consistenly guessing around the median or mean value of <code>price_log</code>. To test this possibility, I conducted dummy regression, using both the mean and the median. The RMSE for both models is similar (Median strategy: RMSE = 0.358, Mean strategy: RMSE = 0.349), but the R<sup>2</sup> value is below or close to 0 for both models. The predictive model has much more success when predicting price.
 
 ## <span style="color: Teal; font-weight: bold">Random Forest</span>
-To see if more advanced models may improve prediction, I trained a random forest model on the same dataset. Using a grid search and fivefold cross-validation, I identified the highest-performing model. It had an R<sup>2</sup> value of .261 (~.10 above the ridge regression model; an increase of about 62%) and error similar to that of the ridge regression (RMSE = 0.294).
+To see if more advanced models may improve prediction, I trained a random forest model on the same dataset. Using a grid search and fivefold cross-validation, I identified the highest-performing model. It had an R<sup>2</sup> value of .261 (about 62% higher than the ridge regression model) and error similar to that of the ridge regression (RMSE = 0.294; in terms of original price, the RMSE = ~$6.55).
 
 Random forest models do not use regression coefficients, but it is possible to estimate feature importance. Importance values are normalized such that their sum equals to 1. Features with importance values greater than 1/243 (the number of features in the model) are considered to contribute more to the model's performance than average. 48 features fulfilled this criteria, and three features--the interaction between the "family sharing" category and the "indie" genre, the number of supported text languages, and the number of supported audio languages--each contributed more than 5% to the model's performance.
 
@@ -103,11 +103,13 @@ The plots comparing predicted and actual values, and residuals against actual va
 <img src="images/rfc_actual_residuals.png">
 <p></p>
 
+The Random Forest model does a much better job predicting video game prices.
+
 ## <span style="color: Teal; font-weight: bold">Other Model</span>
-I also conducted SVM modeling. However, the R<sup>2</sup> value, while better than the ridge regression, was not as strong as the random forest model (R<sup>2</sup> = 0.225), so that model is not discussed in detail here.
+I also conducted SVM (Support Vector Machine) modeling, again with a grid search method. However, the R<sup>2</sup> value, while better than the ridge regression, was not as strong as the random forest model (R<sup>2</sup> = 0.225), so that model is not discussed in detail here.
 
 # <span style="color: Teal; font-weight: bold">Model Interpretation</span>
-Two models were discussed, both of which showed some power for predicting game prices. Looking at the top 20 featuers for each model, we can see some patterns emerge.
+Two models were discussed, both of which showed some power for predicting game prices. Looking at the top 20 features for each model, we can see some patterns emerge.
 
 <p align="center">
 <img src="images/results_concat.png">
@@ -120,7 +122,7 @@ Two models were discussed, both of which showed some power for predicting game p
   <li>In both models, games that had the "family sharing" category and the "indie" genre were much more likely to sell for less than other games. (This feature along contributed more than 10% to the random forest model's performance.)</li>
 </ul>
 
-For those in the video game industry, it may be profitable to prioritize video games in the above genres/categories, as well as focusing on translating the game's text into as many languages as possible. Similarly, it may be worth dedicating some capital to a dedicated game website and list it on the Steam storefront.
+For those in the video game industry, it may be profitable to prioritize video games in the above genres/categories, as well as focusing on translating the game's text into as many languages as possible. Similarly, it may be worth putting resources towards a dedicated game website--this probably communicates to players that the creators truly believe in the quality of the game.
 
 # <span style="color: Teal; font-weight: bold">Next Steps & Recommendations</span>
 Although the final R<sup>2</sup> value for the final random forest model is significantly above that of the dummy regressor models, there is still a significant amount of error in the model, and it is non-random. This means that there are more dimensions that could be included in the model to improve performance.
