@@ -107,7 +107,26 @@ The plots comparing predicted and actual values, and residuals against actual va
 I also conducted SVM modeling. However, the R<sup>2</sup> value, while better than the ridge regression, was not as strong as the random forest model (R<sup>2</sup> = 0.225), so that model is not discussed in detail here.
 
 # <span style="color: Teal; font-weight: bold">Model Interpretation</span>
+Two models were discussed, both of which showed some power for predicting game prices. Looking at the top 20 featuers for each model, we can see some patterns emerge.
 
+<p align="center">
+<img src="images/results_concat.png">
+<p></p>
+
+<li>
+  <ul>There are a few video game tags that predict price (Anime, 2D [negatively related], Singleplayer, Pixel Graphics [negatively related], and Puzzle [negatively related]). This suggests that games that receive these tags are likely to perform better (or worse) than average.</ul>
+  <ul>The number of supported text languages is the strongest (ridge) or second strongest (random forest) feature in each model. Similarly, the number of full audio languages was important in the random forest model but not in the ridge model.</ul>
+  <ul>If a game has a listed website, it is likely to sell for more. Similarly, in the random forest model, games with support URLs listed were also likely to sell for more.</ul>
+  <ul>In both models, games that had the "family sharing" category and the "indie" genre were much more likely to sell for less than other games. (This feature along contributed more than 10% to the random forest model's performance.)</ul>
+</li>
+
+For those in the video game industry, it may be profitable to prioritize video games in the above genres/categories, as well as focusing on translating the game's text into as many languages as possible. Similarly, it may be worth dedicating some capital to a dedicated game website and list it on the Steam storefront.
 
 # <span style="color: Teal; font-weight: bold">Next Steps</span>
-When I started this project, I decided against including features like developer and publisher because--even though they would likely predict price, because certain developers will produce high-value games--the goal was to create a model that was useful *for* developers and publishers when deciding where to focus their efforts. It would not be useful to learn that they could likely sell their games for more if only they were a different company. However, such information may be useful when developers and publishers are deciding which companies to partner with in the game development and deployment cycle. This is one area that would be ripe for further exploration.
+Although the final R<sup>2</sup> value for the final random forest model is significantly above that of the dummy regressor models, there is still a significant amount of error in the model, and it is non-random. This means that there are more dimensions that could be included in the model to improve performance.
+
+When I started this project, I decided against including features like developer and publisher because--even though they would likely predict price, because certain developers will produce high-value games--the goal was to create a model that was useful *for* developers and publishers when deciding where to focus their efforts. It would not be useful to learn that they could likely sell their games for more if only they were a different company. However, such information may be useful when developers and publishers are deciding which companies to partner with in the game development and deployment cycle. This is one area that would be ripe for further exploration, and including this information may help to reduce the systematic error in the final model.
+
+It would also be possible to scrape other information from the Steam API to add to the dataset. I am not an expert in this field, and someone with more domain knowledge of the video games industry would likely be able to identify which features may be useful to extract and include in a model. Additionally, there may be other ways of preprocessing the data that may yield more useful information.
+
+Additionally, training a deep neural network may be beneficial after including more dimensions. Due to issues with the dataset's size, I was not able to train a deep neural network for this project, and I am not sure how much it would improve performance with the current dataset--much of the dataset is a relatively sparse matrix, with most games having 0 values in most genre/category and tag features.
