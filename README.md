@@ -66,8 +66,9 @@ From the EDA, we can see a few things:
 
 Based on this, we can predict we may have to go beyond basic linear regression modeling to find a solid model.
 
-## <span style="color: Teal; font-weight: bold">Data Modeling</span>
-At this stage, I tested how well ridge regression predicts the target. Because ridge regression can handle many predictor features due to how it regularizes predictors, I decided to try including all the predictor categories I had identified. Additionally, I decided to test a second-degree model for Categories and Genres (which are coded as 0 and 1, to signify whether a specific category or genre was mapped to a game) to see if the interaction of the two may predict game price. It is feasible, for example, that a "multiplayer first-person-shooter" sells much better than games that are only either "multiplayer" or "first-person-shooter".
+# <span style="color: Teal; font-weight: bold">Data Modeling</span>
+# <span style="color: Teal; font-weight: bold">Ridge Regression</span>
+At this stage, I tested how well ridge regression predicts the target. Because ridge regression can handle many predictor features due to how it regularizes predictors, I tried including all the predictor categories I had identified. Additionally, I decided to test a second-degree model for Categories and Genres (which are coded as 0 and 1, to signify whether a specific category or genre was mapped to a game) to see if the interaction of the two may predict game price. It is feasible, for example, that a "multiplayer first-person-shooter" sells much better than games that are only either "multiplayer" or "first-person-shooter".
 
 The final ridge regression model predicts price fairly well. The final RMSE of the model is 0.31. Because the target (<code>price_log</code>) is the log of price, we can transform the RMSE to dollars by finding the RMSE of the exponentiated predictions and the original values. After doing so, we get an RMSE of $1.05, which means the predictions given by model are on average within $1.05 of the actual price. This is very good, overall, given the range of <code>price</code> is between $10 and ~ $51. However, the R<sup>2</sup> value is only .160, and given the scale of price I would expect that the R<sup>2</sup> would be a bit higher with an RSME that small.
 
@@ -82,5 +83,31 @@ I plotted the predicted and actual values, as well as the residual values agains
 
 There is some predictive power, but it is clear that much of the error is non-random, since residuals increase as actual price goes up. This suggests the model is consistenly guessing around the median or mean value of <code>price_log</code>. To test this possibility, I conducted dummy regression, using both the mean and the median. The RMSE for both models is similar (Median strategy: RMSE = 0.358, Mean strategy: RMSE = 0.349), but the R<sup>2</sup> value is below or close to 0 than the model for both models. Although the error values for both dummy models are similar to the predictive model's error, the predictive model has much better predictive power when guessing price.
 
-## <span style="color: Teal; font-weight: bold">Next Steps</span>
-The next step is to use more advanced techniques like random forest, XGBoost, SVM, and maybe a deep neural network to see if better models can be produced.
+## <span style="color: Teal; font-weight: bold">Random Forest</span>
+To see if more advanced models may improve prediction, I trained a random forest model on the same dataset. Using a grid search and fivefold cross-validation, I identified the highest-performing model. It had an R<sup>2</sup> value of .261 (~.10 above the ridge regression model; an increase of about 62%) and error similar to that of the ridge regression (RMSE = 0.294).
+
+Random forest models do not use regression coefficients, but it is possible to estimate feature importance. Importance values are normalized such that their sum equals to 1. Features with importance values greater than 1/243 (the number of features in the model) are considered to contribute more to the model's performance than average. 48 features fulfilled this criteria, and three features--the interaction between the "family sharing" category and the "indie" genre, the number of supported text languages, and the number of supported audio languages--each contributed more than 5% to the model's performance.
+
+Importance values do not indicate the direction of the relationship between predictors and target, but a correlation matrix of these features shows that games the both the "family sharing" and "indie" categories sell for *less* money, while both language features are positively related to price.
+
+<p align="center">
+<img src="images/rfc_correlations.png">
+<p></p>
+
+The plots comparing predicted and actual values, and residuals against actual values, show similar patterns as the regression plots.
+<p align="center">
+<img src="images/rfc_predicted_actual.png">
+<p></p>
+
+<p align="center">
+<img src="images/rfc_actual_residuals.png">
+<p></p>
+
+## <span style="color: Teal; font-weight: bold">Other Model</span>
+I also conducted SVM modeling. However, the R<sup>2</sup> value, while better than the ridge regression, was not as strong as the random forest model (R<sup>2</sup> = 0.225), so that model is not discussed in detail here.
+
+# <span style="color: Teal; font-weight: bold">Model Interpretation</span>
+
+
+# <span style="color: Teal; font-weight: bold">Next Steps</span>
+When I started this project, I decided against including features like developer and publisher because--even though they would likely predict price, because certain developers will produce high-value games--the goal was to create a model that was useful *for* developers and publishers when deciding where to focus their efforts. It would not be useful to learn that they could likely sell their games for more if only they were a different company. However, such information may be useful when developers and publishers are deciding which companies to partner with in the game development and deployment cycle. This is one area that would be ripe for further exploration.
