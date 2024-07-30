@@ -1,5 +1,5 @@
 # What Drives the Price of Video Games on Steam?
-(The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>
+(The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>.)
 
 ## <span style="color: Teal; font-weight: bold">Business Understanding & Assessing the Situation</span>
 
