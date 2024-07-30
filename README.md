@@ -1,4 +1,6 @@
 # What Drives the Price of Video Games on Steam?
+Matthew Bennett
+
 (The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>.)
 
 ## <span style="color: Teal; font-weight: bold">Business Understanding & Assessing the Situation</span>
@@ -131,3 +133,6 @@ When I started this project, I decided against including features like developer
 It would also be possible to scrape other information from the Steam API to add to the dataset, or get other useful data from other sources. I am not an expert in this field, and someone with more domain knowledge of the video games industry could identify which other features may be useful to include in a model. Additionally, there may be other ways of preprocessing the data that may yield more useful information--I had to make decisions about how to represent categories, genres, and tags in the data that may have resulted in less predictive power.
 
 Finally, training a deep neural network may be beneficial after including more dimensions. Due to issues with the dataset's size, I was not able to train a deep neural network for this project, and I am not sure how much it would improve performance with the current dataset--much of the dataset is a relatively sparse matrix, with most games having 0 values in most genre/category and tag features. However, deep neural networks may be able to find stronger patterns in a larger dataset with high-information features.
+
+# Contact and Further Information
+For more information regarding this project, contact the author (Matthew Bennett) at matthew.bennett0059@gmail.com.
