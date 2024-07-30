@@ -1,7 +1,7 @@
 # What Drives the Price of Video Games on Steam?
 (The notebook with EDA can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_EDA.ipynb">here</a>. The notebook with modeling work can be found <a href="https://github.com/mattbenn/capstone/blob/main/Steam%20Games_Modeling.ipynb">here</a>
 
-## <span style="color: Teal; font-weight: bold"> Business Understanding & Assessing the Situation</span>
+## <span style="color: Teal; font-weight: bold">Business Understanding & Assessing the Situation</span>
 
 <span style="color: Teal; text-decoration: underline">**Determine Business Objectives:**</span> Video games are now <a href="https://www.forbes.com/sites/forbesagencycouncil/2023/11/17/the-gaming-industry-a-behemoth-with-unprecedented-global-reach/">one of the largest enterainment industries in the world</a>, and Steam is one of the largest platforms for the distribution and hosting of personal computer (PC) games, and has been for <a href="https://archive.vn/JkIMI">over a decade</a>. Many video game developers release a variety of games on Steam of different genres, budgets, and quality, all tailored to different market segments. Developers have a strong interest in predicting how popular their games will be and which price points to choose when selling their games. Therefore, high-quality data showing what characteristics of games are related to popularity and price are of great interest (and great value) to video game developers looking to distribute games to a wide PC audience.
 
